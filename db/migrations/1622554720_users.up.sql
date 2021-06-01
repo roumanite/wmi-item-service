@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS users
 (
     id                         varchar(510),
+    bio                        varchar(510),
     username                   varchar(255) unique,
     first_name                 varchar(510),
     last_name                  varchar(510),
