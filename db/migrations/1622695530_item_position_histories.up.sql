@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS item_position_histories
     user_id_owner           varchar(510),
     position_id             int8,
     latest_picture_url      varchar(510),
-    deleted_notes           varchar(510),
+    deletion_notes          varchar(510),
     created_at              timestamptz,
     updated_at              timestamptz,
     deleted_at              timestamptz,
