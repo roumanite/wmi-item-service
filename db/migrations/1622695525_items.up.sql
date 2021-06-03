@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS items
     id                      int8 not null default nextval('items_id_seq'),
     name                    varchar(510),
     user_id_owner           varchar(510),
-    category_id             varchar(510),
+    category_id             int8,
     display_picture_url     varchar(510),
     notes                   varchar(510),
     created_at              timestamptz,

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS item_position_histories
 (
     id                      int8 not null default nextval('item_position_histories_id_seq'),
     user_id_owner           varchar(510),
-    position_id             varchar(510),
+    position_id             int8,
     latest_picture_url      varchar(510),
     deleted_notes           varchar(510),
     created_at              timestamptz,
