@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS positions;
+DROP SEQUENCE IF EXISTS positions_id_seq;
