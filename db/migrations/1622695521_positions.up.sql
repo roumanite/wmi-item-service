@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS positions
 (
     id                  int8 not null default nextval('positions_id_seq'),
     name                varchar(510),
-    residence_id        varchar(510),
-    position_id_parent  varchar(510),
+    residence_id        int8 not null,
+    position_id_parent  int8,
     created_at          timestamptz,
     updated_at          timestamptz,
     deleted_at          timestamptz,
