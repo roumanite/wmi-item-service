@@ -10,14 +10,16 @@ type Server struct {
 	router *gin.Engine
 	userService port.UserService
 	residenceService port.ResidenceService
+	itemService port.ItemService
 	jwtKey string
 }
 
-func NewServer(router *gin.Engine, userService port.UserService, residenceService port.ResidenceService, jwtKey string) *Server {
+func NewServer(router *gin.Engine, userService port.UserService, residenceService port.ResidenceService, itemService port.ItemService, jwtKey string) *Server {
 	return &Server{
 		router,
 		userService,
 		residenceService,
+		itemService,
 		jwtKey,
 	}
 }
@@ -31,6 +33,7 @@ func (s *Server) Run() error {
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))
 	{
 		loginRequired.POST("/residence", s.ResidencePost())
+		loginRequired.POST("/item", s.ItemPost())
 	}
 
 	err := r.Run()
