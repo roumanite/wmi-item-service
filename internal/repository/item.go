@@ -16,7 +16,6 @@ func NewItemRepo(db *gorm.DB) *ItemRepo {
 
 func (r *ItemRepo) CreateItem(req domain.CreateItemRequest) (*domain.Item, error) {
 	item := domain.Item{
-		Id: req.Id,
 		Name: req.Name,
 		UserIdOwner: req.UserIdOwner,
 		CategoryId: req.CategoryId,

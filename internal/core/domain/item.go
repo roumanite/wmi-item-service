@@ -11,8 +11,6 @@ type Item struct {
 }
 
 type CreateItemRequest struct {
-	Base
-	Id int
     Name string
     UserIdOwner string
     CategoryId int
