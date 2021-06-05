@@ -14,6 +14,7 @@ type Config struct {
 		DbName   string `yaml:"db_name"`
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
+		Schema   string `yaml:"schema"`
 	} `yaml:"database"`
 }
 

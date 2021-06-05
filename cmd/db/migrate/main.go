@@ -1,12 +1,12 @@
 package main
 
 import (
-	"database/sql"
+	pg "wmi-item-service/pkg/postgresql"
 	"fmt"
 	"flag"
 	"github.com/golang-migrate/migrate/database/postgres"
 	"github.com/golang-migrate/migrate"
-	"wmi-item-service/config"
+	"wmi-item-service/internal/config"
 	_ "github.com/golang-migrate/migrate/source/file"
 	"strconv"
 )
@@ -35,20 +35,14 @@ func main() {
 	}
 
 	cfg := config.LoadConfig()
-
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
+	db, err := pg.Open(
 		cfg.Database.Host,
 		cfg.Database.Username,
 		cfg.Database.Password,
 		cfg.Database.DbName,
 		cfg.Database.Port,
+		*schemaPtr,
 	)
-	if *schemaPtr != "public" {
-		dsn += " search_path=" + *schemaPtr
-	}
-
-	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -1,4 +1,4 @@
-package handler
+package httpd
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SignUpPost() gin.HandlerFunc {
+func (s *Server) SignUpPost() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": "success"})
 	}

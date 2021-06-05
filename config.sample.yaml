@@ -4,3 +4,4 @@ database:
   username: postgres
   password: postgres
   db_name: wmi
+  schema: development

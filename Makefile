@@ -4,7 +4,7 @@ setup:
 
 server:
 	@echo "--- Run httpd server ---"
-	@go run cmd/server/main.go
+	@go run cmd/httpd/main.go
 
 migrate-up:
 	@echo "--- Run db migration ---"
