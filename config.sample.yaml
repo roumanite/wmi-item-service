@@ -5,3 +5,4 @@ database:
   password: postgres
   db_name: wmi
   schema: development
+jwt_key: a-jwt-secret-key

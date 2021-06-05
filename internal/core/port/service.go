@@ -7,5 +7,5 @@ type UserService interface {
 }
 
 type ResidenceService interface {
-	CreateResidence(domain.CreateResidenceRequest) error
+	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 }

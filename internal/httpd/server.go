@@ -10,13 +10,15 @@ type Server struct {
 	router *gin.Engine
 	userService port.UserService
 	residenceService port.ResidenceService
+	jwtKey string
 }
 
-func NewServer(router *gin.Engine, userService port.UserService, residenceService port.ResidenceService) *Server {
+func NewServer(router *gin.Engine, userService port.UserService, residenceService port.ResidenceService, jwtKey string) *Server {
 	return &Server{
 		router,
 		userService,
 		residenceService,
+		jwtKey,
 	}
 }
 
@@ -24,7 +26,12 @@ func (s *Server) Run() error {
 	r := s.router
 
 	r.POST("/user/sign-up", s.SignUpPost())
-	r.POST("/residence", s.ResidencePost())
+
+	loginRequired := r.Group(".")
+	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))
+	{
+		loginRequired.POST("/residence", s.ResidencePost())
+	}
 
 	err := r.Run()
 	if err != nil {

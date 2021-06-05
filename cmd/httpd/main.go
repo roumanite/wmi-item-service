@@ -5,7 +5,7 @@ import (
 	"wmi-item-service/internal/httpd"
 	"wmi-item-service/internal/repository"
 	"wmi-item-service/internal/core/service"
-	"wmi-item-service/pkg/postgresql"
+	"wmi-item-service/pkg/postgres"
 	"github.com/gin-gonic/gin"
 	_ "github.com/golang-migrate/migrate/database/postgres"
 	"fmt"
@@ -24,7 +24,7 @@ func run() error {
 
 	router := gin.Default()
 
-	dbConn, err := postgresql.NewConnection(
+	dbConn, err := postgres.NewConnection(
 		cfg.Database.Host,
 		cfg.Database.Username,
 		cfg.Database.Password,
@@ -39,7 +39,7 @@ func run() error {
 	residenceRepo := repository.NewResidenceRepo(dbConn)
 	residenceService := service.NewResidenceService(residenceRepo)
 
-	server := httpd.NewServer(router, userService, residenceService)
+	server := httpd.NewServer(router, userService, residenceService, cfg.JwtKey)
 
 	err = server.Run()
 	if err != nil {

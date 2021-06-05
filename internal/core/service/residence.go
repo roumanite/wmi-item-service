@@ -13,10 +13,10 @@ func NewResidenceService(repo port.ResidenceRepository) *ResidenceService {
 	return &ResidenceService{repo}
 }
 
-func (s *ResidenceService) CreateResidence(req domain.CreateResidenceRequest) error {
-	err := s.repo.CreateResidence(req)
+func (s *ResidenceService) CreateResidence(req domain.CreateResidenceRequest) (*domain.Residence, error) {
+	residence, err := s.repo.CreateResidence(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return residence, nil
 }

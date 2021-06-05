@@ -1,4 +1,4 @@
-package postgresql
+package postgres
 
 import (
 	"fmt"
@@ -9,21 +9,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type Connection struct {
-	db *gorm.DB
-	schema string
-}
-
-func NewConnection(host string, username string, password string, dbName string, port int, schema string) (*Connection, error) {
+func NewConnection(host string, username string, password string, dbName string, port int, schema string) (*gorm.DB, error) {
 	db, err := connect(host, username, password, dbName, port, schema)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Connection{
-		db: db,
-		schema: schema,
-	}, nil
+	return db, nil
 }
 
 func connect(host string, username string, password string, dbName string, port int, schema string) (*gorm.DB, error) {

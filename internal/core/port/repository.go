@@ -7,5 +7,5 @@ type UserRepository interface {
 }
 
 type ResidenceRepository interface {
-	CreateResidence(domain.CreateResidenceRequest) error
+	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	pg "wmi-item-service/pkg/postgresql"
+	pg "wmi-item-service/pkg/postgres"
 	"fmt"
 	"flag"
 	"github.com/golang-migrate/migrate/database/postgres"

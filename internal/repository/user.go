@@ -1,12 +1,14 @@
 package repository
 
-import "wmi-item-service/pkg/postgresql"
+import (
+	"gorm.io/gorm"
+)
 
 type UserRepo struct {
-	db *postgresql.Connection
+	db *gorm.DB
 }
 
-func NewUserRepo(db *postgresql.Connection) *UserRepo {
+func NewUserRepo(db *gorm.DB) *UserRepo {
 	return &UserRepo{db}
 }
 

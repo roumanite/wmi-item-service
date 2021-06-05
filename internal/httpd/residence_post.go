@@ -7,7 +7,7 @@ import (
 )
 
 type residencePostRequest struct {
-	Nickname string
+	Nickname string `binding:"required"`
 	StreetAddress string `json:"streetAddress"`
 	City string
 	State string
@@ -24,7 +24,9 @@ func (s *Server) ResidencePost() gin.HandlerFunc {
 			return
 		}
 
-		s.residenceService.CreateResidence(domain.CreateResidenceRequest{
+		claims, _ := c.Keys[jwtClaimsCtxKey].(JwtClaims)
+		residence, err := s.residenceService.CreateResidence(domain.CreateResidenceRequest{
+			UserId: claims.UserId,
 			Nickname: req.Nickname,
 			StreetAddress: req.StreetAddress,
 			City: req.City,
@@ -33,6 +35,12 @@ func (s *Server) ResidencePost() gin.HandlerFunc {
 			ZipCode: req.ZipCode,
 			BuildingName: req.BuildingName,
 		})
-		c.JSON(http.StatusOK, gin.H{"code": "success"})
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"code": "invalid-request"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"code": "success", "residence": residence})
 	}
 }
