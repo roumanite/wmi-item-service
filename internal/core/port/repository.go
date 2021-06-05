@@ -9,3 +9,7 @@ type UserRepository interface {
 type ResidenceRepository interface {
 	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 }
+
+type ItemRepository interface {
+	CreateItem(domain.CreateItemRequest) (*domain.Item, error)
+}

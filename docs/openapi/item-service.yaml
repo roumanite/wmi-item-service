@@ -29,7 +29,7 @@ paths:
               properties:
                 nickname:
                   type: string
-                street_address:
+                streetAddress:
                   type: string
                 city:
                   type: string
@@ -37,9 +37,9 @@ paths:
                   type: string
                 country:
                   type: string
-                zip_code:
+                zipCode:
                   type: string
-                building_name:
+                buildingName:
                   type: string
       responses:
         '201':
@@ -59,9 +59,9 @@ paths:
               properties:
                 name:
                   type: string
-                category_id:
+                categoryId:
                   type: string
-                display_picture_url:
+                displayPictureUrl:
                   type: string
                 notes:
                   type: string

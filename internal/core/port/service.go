@@ -9,3 +9,7 @@ type UserService interface {
 type ResidenceService interface {
 	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 }
+
+type ItemService interface {
+	CreateItem(domain.CreateItemRequest) (*domain.Item, error)
+}
