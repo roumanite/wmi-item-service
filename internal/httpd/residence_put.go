@@ -1,12 +1,14 @@
 package httpd
 
+// check *****
 import (
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
-type residencePostRequest struct {
+type residencePutRequest struct {
 	Nickname string `binding:"required"`
 	StreetAddress string `json:"streetAddress"`
 	City string
@@ -16,16 +18,18 @@ type residencePostRequest struct {
 	BuildingName string `json:"buildingName"`
 }
 
-func (s *Server) ResidencePost() gin.HandlerFunc {
+func (s *Server) ResidencePut() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req residencePostRequest
+		var req residencePutRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(JwtClaims)
-		residence, err := s.residenceService.CreateResidence(domain.CreateResidenceRequest{
+		id, _ := strconv.Atoi(c.Param("id"))
+		residence, err := s.residenceService.UpdateResidence(domain.UpdateResidenceRequest{
+			Id: id,
 			UserIdOwner: claims.UserId,
 			Nickname: req.Nickname,
 			StreetAddress: req.StreetAddress,

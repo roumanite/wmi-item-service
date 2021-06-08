@@ -34,7 +34,18 @@ func (s *Server) Run() error {
 	{
 		loginRequired.POST("/residence", s.ResidencePost())
 		loginRequired.POST("/item", s.ItemPost())
+
+		loginRequired.PUT("/residence/:id", s.ResidencePut())
+		loginRequired.PUT("/item/:id", s.ItemPut())
+
+		loginRequired.GET("/residence/:id", s.ResidenceGet())
+		loginRequired.GET("/item/:id", s.ItemGet())
+
+		loginRequired.DELETE("/residence/:id", s.ResidenceDelete())
+		loginRequired.DELETE("/item/:id", s.ItemDelete())
 	}
+
+
 
 	err := r.Run()
 	if err != nil {
