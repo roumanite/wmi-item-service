@@ -20,3 +20,28 @@ func (s *ResidenceService) CreateResidence(req domain.CreateResidenceRequest) (*
 	}
 	return residence, nil
 }
+
+// check *****
+func (s *ResidenceService) UpdateResidence(req domain.UpdateResidenceRequest) (*domain.Residence, error) {
+	residence, err := s.repo.UpdateResidence(req)
+	if err != nil {
+		return nil, err
+	}
+	return residence, nil
+}
+
+func (s *ResidenceService) GetResidence(req domain.GetResidenceRequest) (*domain.Residence, error) {
+	residence, err := s.repo.GetResidence(req)
+	if err != nil {
+		return nil, err
+	}
+	return residence, nil
+}
+
+func (s *ResidenceService) DeleteResidence(req domain.DeleteResidenceRequest) (error) {
+	err := s.repo.DeleteResidence(req)
+	if err != nil {
+		return err
+	}
+	return nil
+}

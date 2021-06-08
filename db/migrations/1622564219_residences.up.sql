@@ -8,7 +8,7 @@ CREATE sequence residences_id_seq
 CREATE TABLE IF NOT EXISTS residences
 (
     id             int8 not null default nextval('residences_id_seq'),
-    user_id        varchar(510) not null,
+    user_id_owner  varchar(510) not null,
     nickname       varchar(255),
     street_address varchar(510),
     city           varchar(510),

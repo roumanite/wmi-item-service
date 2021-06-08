@@ -2,7 +2,6 @@ package domain
 
 type Item struct {
 	Base
-	Id int `json:"id"`
     Name string `json:"name"`
     UserIdOwner string `json:"userIdOwner"`
     CategoryId int `json:"categoryId"`
@@ -16,4 +15,24 @@ type CreateItemRequest struct {
     CategoryId int
     DisplayPictureUrl string
     Notes string
+}
+
+// check *****
+type UpdateItemRequest struct {
+    Id int
+    Name string
+    UserIdOwner string
+    CategoryId int
+    DisplayPictureUrl string
+    Notes string
+}
+
+type GetItemRequest struct {
+    Id int
+    UserIdOwner string
+}
+
+type DeleteItemRequest struct {
+    Id int
+    UserIdOwner string
 }
