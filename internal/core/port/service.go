@@ -3,7 +3,7 @@ package port
 import "wmi-item-service/internal/core/domain"
 
 type UserService interface {
-	CreateUser() error
+	CreateUser(domain.CreateUserRequest) error
 }
 
 type ResidenceService interface {
