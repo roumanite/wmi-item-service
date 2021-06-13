@@ -8,16 +8,16 @@ import (
 
 type Server struct {
 	router *gin.Engine
-	userService port.UserService
+	authService port.AuthService
 	residenceService port.ResidenceService
 	itemService port.ItemService
 	jwtKey string
 }
 
-func NewServer(router *gin.Engine, userService port.UserService, residenceService port.ResidenceService, itemService port.ItemService, jwtKey string) *Server {
+func NewServer(router *gin.Engine, authService port.AuthService, residenceService port.ResidenceService, itemService port.ItemService, jwtKey string) *Server {
 	return &Server{
 		router,
-		userService,
+		authService,
 		residenceService,
 		itemService,
 		jwtKey,
@@ -44,8 +44,6 @@ func (s *Server) Run() error {
 		loginRequired.DELETE("/residence/:id", s.ResidenceDelete())
 		loginRequired.DELETE("/item/:id", s.ItemDelete())
 	}
-
-
 
 	err := r.Run()
 	if err != nil {

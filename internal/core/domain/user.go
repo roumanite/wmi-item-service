@@ -9,7 +9,7 @@ type User struct {
 	EncryptedPassword string
 }
 
-type CreateUserRequest struct {
+type SignUpRequest struct {
 	Email string
 	FirstName string
 	LastName string
@@ -17,7 +17,7 @@ type CreateUserRequest struct {
 	Password string
 }
 
-type InsertUserRequest struct {
+type CreateUserRequest struct {
 	Email string
 	FirstName string
 	LastName string

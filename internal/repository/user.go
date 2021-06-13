@@ -15,7 +15,7 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 	return &UserRepo{db}
 }
 
-func (r *UserRepo) CreateUser(req domain.InsertUserRequest) error {
+func (r *UserRepo) CreateUser(req domain.CreateUserRequest) error {
 	var users []domain.User
 	err := r.db.Where("(email = ? OR username = ?) AND deleted_at IS NULL", req.Email, req.Username).Find(&users).Error
 	if err != nil {

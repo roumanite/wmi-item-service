@@ -23,7 +23,7 @@ func (s *Server) SignUpPost() gin.HandlerFunc {
 			return
 		}
 
-		err := s.userService.CreateUser(domain.CreateUserRequest{
+		err := s.authService.SignUp(domain.SignUpRequest{
 			Email: req.Email,
 			FirstName: req.FirstName,
 			LastName: req.LastName,
