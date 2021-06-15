@@ -28,3 +28,7 @@ func (s *AuthService) SignUp(req domain.SignUpRequest) error {
 	})
 	return err
 }
+
+func (s *AuthService) SignIn(req domain.SignInRequest) error {
+	return nil
+}

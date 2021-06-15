@@ -17,6 +17,11 @@ type SignUpRequest struct {
 	Password string
 }
 
+type SignInRequest struct {
+	Identifier string
+	Password string
+}
+
 type CreateUserRequest struct {
 	Email string
 	FirstName string

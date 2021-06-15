@@ -28,6 +28,7 @@ func (s *Server) Run() error {
 	r := s.router
 
 	r.POST("/user/sign-up", s.SignUpPost())
+	r.POST("/user/sign-in", s.SignInPost())
 
 	loginRequired := r.Group(".")
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))

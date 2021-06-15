@@ -33,6 +33,10 @@ func run() error {
 		cfg.Database.Schema,
 	)
 
+	if err != nil {
+		return err
+	}
+
 	userRepo := repository.NewUserRepo(dbConn)
 	authService := service.NewAuthService(userRepo)
 
