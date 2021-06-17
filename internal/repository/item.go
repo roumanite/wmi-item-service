@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"wmi-item-service/internal/core/domain"
 	"time"
+	"errors"
 )
 
 type ItemRepo struct {
@@ -49,12 +50,17 @@ func (r *ItemRepo) UpdateItem(req domain.UpdateItemRequest) (*domain.Item, error
 
 func (r *ItemRepo) GetItem(req domain.GetItemRequest) (*domain.Item, error) {
 	item := domain.Item{}
-	err := r.db.Table("items").Where("id = ? and user_id_owner = ?", req.Id, req.UserIdOwner).Take(&item).Error // TODO
+	err := r.db.Table("items").
+		Where("id = ? and user_id_owner = ?", req.Id, req.UserIdOwner).
+		Take(&item).Error // TODO
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domain.ErrNotFound
+		}
 		fmt.Printf("get item db error %v\n", err)
-		return nil, err
+		return nil, domain.ErrUnknown
 	}
-	return &item, err
+	return &item, nil
 }
 
 func (r *ItemRepo) DeleteItem(req domain.DeleteItemRequest) (error) {

@@ -3,9 +3,9 @@ package httpd
 import (
 	"github.com/gin-gonic/gin"
 	"strings"
-	"net/http"
 	"github.com/dgrijalva/jwt-go"
 	"errors"
+	"wmi-item-service/internal/core/domain"
 )
 
 type JwtClaims struct {
@@ -19,6 +19,16 @@ type Err struct {
 	Message string `json:"message"`
 }
 
+const (
+	jwtNoToken = "jwt-no-token"
+	jwtBadToken = "jwt-bad-token"
+)
+
+var (
+	ErrNoToken = domain.CustomError(jwtNoToken, "Bearer token is not found in HTTP Authorization header")
+	ErrBadToken = domain.CustomError(jwtBadToken, "Invalid JWT token or signature")
+)
+
 var jwtSigningMethod = jwt.SigningMethodHS256
 
 const jwtClaimsCtxKey string = "claims"
@@ -29,11 +39,7 @@ func (s *Server) Authenticate(jwtKey []byte) gin.HandlerFunc {
 		splitToken := strings.Split(tokenString, "Bearer ")
 
 		if len(splitToken) <= 1 {
-			c.JSON(http.StatusUnauthorized, Err{
-					Code:    "jwt-no-token",
-					Message: "Bearer token is not found in HTTP Authorization header. ",
-			})
-
+			c.Error(ErrNoToken)
 			c.Abort()
 			return
 		}
@@ -47,11 +53,7 @@ func (s *Server) Authenticate(jwtKey []byte) gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, Err{
-				Code:    "jwt-bad-token",
-				Message: "Invalid JWT token or signature.",
-			})
-
+			c.Error(ErrBadToken)
 			c.Abort()
 			return
 		}

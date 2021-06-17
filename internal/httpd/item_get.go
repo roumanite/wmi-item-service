@@ -18,7 +18,7 @@ func (s *Server) ItemGet() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"code": "invalid-request"})
+			c.Error(err)
 			return
 		}
 

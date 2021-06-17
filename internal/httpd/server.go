@@ -27,6 +27,7 @@ func NewServer(router *gin.Engine, authService port.AuthService, residenceServic
 func (s *Server) Run() error {
 	r := s.router
 
+	r.Use(handleError())
 	r.POST("/user/sign-up", s.SignUpPost())
 	r.POST("/user/sign-in", s.SignInPost())
 
