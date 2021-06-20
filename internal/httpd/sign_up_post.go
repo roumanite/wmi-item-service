@@ -2,7 +2,6 @@ package httpd
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"wmi-item-service/internal/core/domain"
 )
@@ -31,7 +30,7 @@ func (s *Server) SignUpPost() gin.HandlerFunc {
 			Password: req.Password,
 		})
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"code": "invalid-request"})
+			c.Error(err)
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{"code": "success"})

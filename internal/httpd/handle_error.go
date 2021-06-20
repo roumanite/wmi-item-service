@@ -11,6 +11,7 @@ var codeToStatus = map[string]int{
 	domain.Unknown: http.StatusInternalServerError,
 	jwtNoToken: http.StatusUnauthorized,
 	jwtBadToken: http.StatusUnauthorized,
+	domain.InvalidRequest: http.StatusBadRequest,
 }
 
 func handleError() gin.HandlerFunc {
@@ -19,12 +20,20 @@ func handleError() gin.HandlerFunc {
 
     errorToReturn := c.Errors.Last()
     if errorToReturn != nil {
-			if err, ok := errorToReturn.Err.(domain.CustomErr); ok {
+			if err, ok := errorToReturn.Err.(*domain.CustomErr); ok {
 				status := codeToStatus[err.Code()]
-				c.JSON(status, gin.H{
-					"code": err.Code(),
-					"message": err.Error(),
-				})
+				if len(err.Details()) > 0 {
+					c.JSON(status, gin.H{
+						"code": err.Code(),
+						"message": err.Error(),
+						"details": err.Details(),
+					})
+				} else {
+					c.JSON(status, gin.H{
+						"code": err.Code(),
+						"message": err.Error(),
+					})
+				}
 			}
     }
 	}

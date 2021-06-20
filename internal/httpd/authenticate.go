@@ -3,16 +3,9 @@ package httpd
 import (
 	"github.com/gin-gonic/gin"
 	"strings"
-	"github.com/dgrijalva/jwt-go"
-	"errors"
+	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 )
-
-type JwtClaims struct {
-	UserId string `json:"userId"`
-
-	jwt.StandardClaims
-}
 
 type Err struct {
 	Code    string `json:"code"`
@@ -25,11 +18,9 @@ const (
 )
 
 var (
-	ErrNoToken = domain.CustomError(jwtNoToken, "Bearer token is not found in HTTP Authorization header")
-	ErrBadToken = domain.CustomError(jwtBadToken, "Invalid JWT token or signature")
+	ErrNoToken = domain.CustomError(jwtNoToken, "Bearer token is not found in HTTP Authorization header", nil)
+	ErrBadToken = domain.CustomError(jwtBadToken, "Invalid JWT token or signature", nil)
 )
-
-var jwtSigningMethod = jwt.SigningMethodHS256
 
 const jwtClaimsCtxKey string = "claims"
 
@@ -45,12 +36,8 @@ func (s *Server) Authenticate(jwtKey []byte) gin.HandlerFunc {
 		}
 
 		tokenString = splitToken[1]
-		token, err := jwt.ParseWithClaims(tokenString, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
-			if token.Method != jwtSigningMethod {
-				return nil, errors.New("Invalid signing method")
-			}
-			return jwtKey, nil
-		})
+
+		claims, err := jwt.ParseToken(jwtKey, tokenString)
 
 		if err != nil {
 			c.Error(ErrBadToken)
@@ -58,7 +45,6 @@ func (s *Server) Authenticate(jwtKey []byte) gin.HandlerFunc {
 			return
 		}
 
-		claims := token.Claims.(*JwtClaims)
 		if c.Keys == nil {
 			c.Keys = make(map[string]interface{})
 		}

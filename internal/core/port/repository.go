@@ -4,6 +4,7 @@ import "wmi-item-service/internal/core/domain"
 
 type UserRepository interface {
 	CreateUser(domain.CreateUserRequest) error
+	GetUser(identifier string) (*domain.User, error)
 }
 
 type ResidenceRepository interface {

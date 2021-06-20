@@ -2,6 +2,7 @@ package httpd
 
 // check *****
 import (
+	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ func (s *Server) ItemDelete() gin.HandlerFunc {
 			return
 		}
 
-		claims, _ := c.Keys[jwtClaimsCtxKey].(JwtClaims)
+		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))
 		err := s.itemService.DeleteItem(domain.DeleteItemRequest{
 			Id: id,

@@ -1,6 +1,7 @@
 package httpd
 
 import (
+	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func (s *Server) ItemPost() gin.HandlerFunc {
 			return
 		}
 
-		claims, _ := c.Keys[jwtClaimsCtxKey].(JwtClaims)
+		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		item, err := s.itemService.CreateItem(domain.CreateItemRequest{
 			Name: req.Name,
 			UserIdOwner: claims.UserId,

@@ -4,7 +4,7 @@ import "wmi-item-service/internal/core/domain"
 
 type AuthService interface {
 	SignUp(domain.SignUpRequest) error
-	SignIn(domain.SignInRequest) error
+	SignIn(domain.SignInRequest) (*domain.User, error)
 }
 
 type ResidenceService interface {

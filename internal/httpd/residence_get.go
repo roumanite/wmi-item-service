@@ -2,6 +2,7 @@ package httpd
 
 // check *****
 import (
+	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 
 func (s *Server) ResidenceGet() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		claims, _ := c.Keys[jwtClaimsCtxKey].(JwtClaims)
+		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))
 		residence, err := s.residenceService.GetResidence(domain.GetResidenceRequest{
 			Id: id,
