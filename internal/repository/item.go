@@ -64,12 +64,33 @@ func (r *ItemRepo) GetItem(req domain.GetItemRequest) (*domain.Item, error) {
 }
 
 func (r *ItemRepo) DeleteItem(req domain.DeleteItemRequest) (error) {
-	err := r.db.Table("items").Where("id = ? and user_id_owner = ?", req.Id, req.UserIdOwner).Updates(map[string]interface{}{
-		"deleted_at": time.Now(),
-	}).Error // TODO
+	err := r.db.Table("items").
+		Where("id = ? and user_id_owner = ?", req.Id, req.UserIdOwner).
+		Updates(map[string]interface{}{
+			"deleted_at": time.Now(),
+		}).Error // TODO
 	if err != nil {
 		fmt.Printf("delete item db error %v\n", err)
 		return err
 	}
 	return nil
+}
+
+func (r *ItemRepo) GetItemList(req domain.GetItemListRequest) (*domain.MetaItems, error) {
+	var items []domain.Item
+	err := r.db.Table("items").
+		Where("user_id_owner = ? AND deleted_at IS NULL", req.UserIdOwner).
+		Limit(req.PerPage).
+		Find(&items).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.MetaItems{
+		Meta: domain.Meta{
+			PerPage: req.PerPage,
+			Order: req.Order,
+		},
+		Items: items,
+	}, nil
 }

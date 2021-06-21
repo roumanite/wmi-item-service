@@ -31,7 +31,24 @@ type GetItemRequest struct {
 	UserIdOwner string
 }
 
+type GetItemListRequest struct {
+	UserIdOwner string
+	PerPage int
+	Order string
+}
+
 type DeleteItemRequest struct {
 	Id int
 	UserIdOwner string
+}
+
+type Meta struct {
+	PerPage int `json:"perPage"`
+	LastId string `json:"lastId"`
+	Order string `json:"order"`
+}
+
+type MetaItems struct {
+	Meta Meta `json:"meta"`
+	Items []Item `json:"results"`
 }

@@ -30,7 +30,7 @@ func ParseToken(jwtKey []byte, tokenString string) (*JwtClaims, error) {
 }
 
 func GenerateToken(jwtKey []byte, id string) (string, error) {
-	expirationTime := time.Now().Add(0 * time.Minute)
+	expirationTime := time.Now().Add(1000 * time.Minute)
 	// Create the JWT claims, which includes the username and expiry time
 	claims := &JwtClaims{
 		UserId: id,

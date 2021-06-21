@@ -38,6 +38,14 @@ func (s *ItemService) GetItem(req domain.GetItemRequest) (*domain.Item, error) {
 	return item, nil
 }
 
+func (s *ItemService) GetItemList(req domain.GetItemListRequest) (*domain.MetaItems, error) {
+	items, err := s.repo.GetItemList(req)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 func (s *ItemService) DeleteItem(req domain.DeleteItemRequest) (error) {
 	err := s.repo.DeleteItem(req)
 	if err != nil {

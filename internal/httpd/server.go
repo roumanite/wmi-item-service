@@ -41,6 +41,7 @@ func (s *Server) Run() error {
 		loginRequired.PUT("/item/:id", s.ItemPut())
 
 		loginRequired.GET("/residence/:id", s.ResidenceGet())
+		loginRequired.GET("/item", s.ItemsGet())
 		loginRequired.GET("/item/:id", s.ItemGet())
 
 		loginRequired.DELETE("/residence/:id", s.ResidenceDelete())

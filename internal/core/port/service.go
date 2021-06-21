@@ -18,5 +18,6 @@ type ItemService interface {
 	CreateItem(domain.CreateItemRequest) (*domain.Item, error)
 	UpdateItem(domain.UpdateItemRequest) (*domain.Item, error)
 	GetItem(domain.GetItemRequest) (*domain.Item, error)
+	GetItemList(domain.GetItemListRequest) (*domain.MetaItems, error)
 	DeleteItem(domain.DeleteItemRequest) (error)
 }
