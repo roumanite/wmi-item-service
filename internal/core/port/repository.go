@@ -11,6 +11,7 @@ type ResidenceRepository interface {
 	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 	UpdateResidence(domain.UpdateResidenceRequest) (*domain.Residence, error)
 	GetResidence(domain.GetResidenceRequest) (*domain.Residence, error)
+	GetResidenceList(domain.GetResidenceListRequest) (*domain.MetaResidences, error)
 	DeleteResidence(domain.DeleteResidenceRequest) (error)
 }
 

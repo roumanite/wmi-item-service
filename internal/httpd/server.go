@@ -40,6 +40,7 @@ func (s *Server) Run() error {
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
 		loginRequired.PUT("/item/:id", s.ItemPut())
 
+		loginRequired.GET("/residence", s.ResidencesGet())
 		loginRequired.GET("/residence/:id", s.ResidenceGet())
 		loginRequired.GET("/item", s.ItemsGet())
 		loginRequired.GET("/item/:id", s.ItemGet())

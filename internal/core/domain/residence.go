@@ -41,7 +41,18 @@ type GetResidenceRequest struct {
 	UserIdOwner string
 }
 
+type GetResidenceListRequest struct {
+	UserIdOwner string
+	PerPage int
+	Order string
+}
+
 type DeleteResidenceRequest struct {
 	Id int
 	UserIdOwner string
+}
+
+type MetaResidences struct {
+	Meta Meta `json:"meta"`
+	Residences []Residence `json:"results"`
 }

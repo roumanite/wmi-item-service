@@ -64,6 +64,25 @@ func (r *ResidenceRepo) GetResidence(req domain.GetResidenceRequest) (*domain.Re
 	return &residence, err
 }
 
+func (r *ResidenceRepo) GetResidenceList(req domain.GetResidenceListRequest) (*domain.MetaResidences, error) {
+	var residences []domain.Residence
+	err := r.db.Table("residences").
+		Where("user_id_owner = ? AND deleted_at IS NULL", req.UserIdOwner).
+		Limit(req.PerPage).
+		Find(&residences).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.MetaResidences{
+		Meta: domain.Meta{
+			PerPage: req.PerPage,
+			Order: req.Order,
+		},
+		Residences: residences,
+	}, nil
+}
+
 func (r *ResidenceRepo) DeleteResidence(req domain.DeleteResidenceRequest) (error) {
 	err := r.db.Table("residence").Where("id = ? and user_id_owner = ?", req.Id, req.UserIdOwner).Updates(map[string]interface{}{
 		"deleted_at": time.Now(), // TODO

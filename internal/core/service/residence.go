@@ -38,6 +38,14 @@ func (s *ResidenceService) GetResidence(req domain.GetResidenceRequest) (*domain
 	return residence, nil
 }
 
+func (s *ResidenceService) GetResidenceList(req domain.GetResidenceListRequest) (*domain.MetaResidences, error) {
+	residences, err := s.repo.GetResidenceList(req)
+	if err != nil {
+		return nil, err
+	}
+	return residences, nil
+}
+
 func (s *ResidenceService) DeleteResidence(req domain.DeleteResidenceRequest) (error) {
 	err := s.repo.DeleteResidence(req)
 	if err != nil {
