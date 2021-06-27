@@ -88,3 +88,20 @@ func (r *UserRepo) GetProfile(id string) (*domain.UserProfile, error) {
 	}
 	return &profile, nil
 }
+
+func (r *UserRepo) UpdateProfile(req domain.UpdateProfileRequest) (*domain.UserProfile, error) {
+	profile := domain.UserProfile{}
+	err := r.db.Model(&domain.User{}).
+		Where("id = ?", req.Id).
+		Updates(map[string]interface{}{
+			"bio": req.Bio,
+			"first_name": req.FirstName,
+			"last_name": req.LastName,
+			"birthdate": req.Birthdate,
+		}).Take(&profile).Error // TODO
+	if err != nil {
+		fmt.Printf("update profile db error %v\n", err)
+		return nil, domain.ErrUnknown
+	}
+	return &profile, err
+}

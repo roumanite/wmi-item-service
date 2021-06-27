@@ -6,6 +6,7 @@ type UserRepository interface {
 	CreateUser(domain.CreateUserRequest) error
 	GetUser(identifier string) (*domain.User, error)
 	GetProfile(id string) (*domain.UserProfile, error)
+	UpdateProfile(domain.UpdateProfileRequest) (*domain.UserProfile, error)
 }
 
 type ResidenceRepository interface {

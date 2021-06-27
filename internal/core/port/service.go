@@ -9,6 +9,7 @@ type AuthService interface {
 
 type UserService interface {
 	GetProfile(id string) (*domain.UserProfile, error)
+	UpdateProfile(domain.UpdateProfileRequest) (*domain.UserProfile, error)
 }
 
 type ResidenceService interface {

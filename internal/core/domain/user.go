@@ -40,3 +40,11 @@ type CreateUserRequest struct {
 	Username string
 	EncryptedPassword string
 }
+
+type UpdateProfileRequest struct {
+	Id string
+	Bio string
+	FirstName string
+	LastName string
+	Birthdate *time.Time
+}

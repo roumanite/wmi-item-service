@@ -46,6 +46,7 @@ func (s *Server) Run() error {
 		loginRequired.POST("/residence", s.ResidencePost())
 		loginRequired.POST("/item", s.ItemPost())
 
+		loginRequired.PUT("/user/my-profile", s.MyProfilePut())
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
 		loginRequired.PUT("/item/:id", s.ItemPut())
 
