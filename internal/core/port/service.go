@@ -7,6 +7,10 @@ type AuthService interface {
 	SignIn(domain.SignInRequest) (*domain.User, error)
 }
 
+type UserService interface {
+	GetProfile(id string) (*domain.UserProfile, error)
+}
+
 type ResidenceService interface {
 	CreateResidence(domain.CreateResidenceRequest) (*domain.Residence, error)
 	UpdateResidence(domain.UpdateResidenceRequest) (*domain.Residence, error)

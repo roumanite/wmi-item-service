@@ -72,3 +72,19 @@ func ( r *UserRepo) GetUser(identifier string) (*domain.User, error) {
 	}
 	return &user, nil
 }
+
+
+func (r *UserRepo) GetProfile(id string) (*domain.UserProfile, error) {
+	profile := domain.UserProfile{}
+	err := r.db.Table("users").
+		Where("id = ?", id).
+		Take(&profile).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domain.ErrNotFound
+		}
+		fmt.Printf("get profile db error %v\n", err)
+		return nil, domain.ErrUnknown
+	}
+	return &profile, nil
+}

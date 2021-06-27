@@ -39,6 +39,7 @@ func run() error {
 
 	userRepo := repository.NewUserRepo(dbConn)
 	authService := service.NewAuthService(userRepo)
+	userService := service.NewUserService(userRepo)
 
 	residenceRepo := repository.NewResidenceRepo(dbConn)
 	residenceService := service.NewResidenceService(residenceRepo)
@@ -46,7 +47,7 @@ func run() error {
 	itemRepo := repository.NewItemRepo(dbConn)
 	itemService := service.NewItemService(itemRepo)
 
-	server := httpd.NewServer(router, authService, residenceService, itemService, cfg.JwtKey)
+	server := httpd.NewServer(router, authService, userService, residenceService, itemService, cfg.JwtKey)
 
 	err = server.Run()
 	if err != nil {
@@ -55,5 +56,3 @@ func run() error {
 
 	return nil
 }
-
-

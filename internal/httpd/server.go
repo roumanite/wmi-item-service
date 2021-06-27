@@ -9,15 +9,24 @@ import (
 type Server struct {
 	router *gin.Engine
 	authService port.AuthService
+	userService port.UserService
 	residenceService port.ResidenceService
 	itemService port.ItemService
 	jwtKey string
 }
 
-func NewServer(router *gin.Engine, authService port.AuthService, residenceService port.ResidenceService, itemService port.ItemService, jwtKey string) *Server {
+func NewServer(
+	router *gin.Engine,
+	authService port.AuthService,
+	userService port.UserService,
+	residenceService port.ResidenceService,
+	itemService port.ItemService,
+	jwtKey string,
+) *Server {
 	return &Server{
 		router,
 		authService,
+		userService,
 		residenceService,
 		itemService,
 		jwtKey,
@@ -40,6 +49,7 @@ func (s *Server) Run() error {
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
 		loginRequired.PUT("/item/:id", s.ItemPut())
 
+		loginRequired.GET("/my-profile", s.MyProfileGet())
 		loginRequired.GET("/residence", s.ResidencesGet())
 		loginRequired.GET("/residence/:id", s.ResidenceGet())
 		loginRequired.GET("/item", s.ItemsGet())

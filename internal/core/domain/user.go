@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type User struct {
 	Id string
 	Email string
@@ -7,6 +9,15 @@ type User struct {
 	LastName string
 	Username string
 	EncryptedPassword string
+}
+
+type UserProfile struct {
+	Id string `json:"id"`
+	Bio string `json:"bio"`
+	Username string `json:"username"`
+	FirstName string `json:"firstName"`
+	LastName string `json:"lastName"`
+	Birthdate *time.Time `json:"birthdate"`
 }
 
 type SignUpRequest struct {
