@@ -43,8 +43,7 @@ func getPostgresDialect(host string, username string, password string, dbName st
 		return nil, err
 	}
 
-	var dialect gorm.Dialector
-	dialect = postgres.New(postgres.Config{Conn: sqlDB})
+	dialect := postgres.New(postgres.Config{Conn: sqlDB})
 	return dialect, nil
 }
 

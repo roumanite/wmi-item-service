@@ -2,49 +2,46 @@ package jwt
 
 import (
 	"time"
-	"github.com/dgrijalva/jwt-go"
+	"strings"
+	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/jwa"
 	"errors"
 )
 
 type JwtClaims struct {
 	UserId string `json:"userId"`
-
-	jwt.StandardClaims
 }
 
-var jwtSigningMethod = jwt.SigningMethodHS256
+var invalidStructure = errors.New("Invalid JWT structure")
+var ExpiredToken = errors.New("JWT has expired")
 
 func ParseToken(jwtKey []byte, tokenString string) (*JwtClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if token.Method != jwtSigningMethod {
-			return nil, errors.New("Invalid signing method")
-		}
-		return jwtKey, nil
-	})
-
+	token, err := jwt.Parse([]byte(tokenString))
 	if err != nil {
 		return nil, err
 	}
-
-	return token.Claims.(*JwtClaims), nil
+	id, ok := token.Get("userId")
+	if !ok {
+		return nil, invalidStructure
+	}
+	err = jwt.Validate(token)
+	if err != nil {
+		if strings.Contains(err.Error(), "exp not satisfied") {
+			return nil, ExpiredToken
+		}
+		return nil, err
+	}
+	return &JwtClaims{UserId: id.(string)}, nil
 }
 
-func GenerateToken(jwtKey []byte, id string) (string, error) {
-	expirationTime := time.Now().Add(1000 * time.Minute)
-	// Create the JWT claims, which includes the username and expiry time
-	claims := &JwtClaims{
-		UserId: id,
-		StandardClaims: jwt.StandardClaims{
-			// In JWT, the expiry time is expressed as unix milliseconds
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwtSigningMethod, claims)
-	// Create the JWT string
-	tokenString, err := token.SignedString(jwtKey)
+func GenerateToken(jwtKey []byte, expirationMinutes int, id string) (string, error) {
+	expirationTime := time.Now().Add(time.Duration(expirationMinutes) * time.Minute)
+	token := jwt.New()
+	token.Set("userId", id)
+	token.Set("exp", expirationTime.Unix())
+	payload, err := jwt.Sign(token, jwa.HS256, jwtKey)
 	if err != nil {
 		return "", err
 	}
-	return tokenString, nil
+	return string(payload), nil
 }

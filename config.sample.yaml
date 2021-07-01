@@ -6,3 +6,4 @@ database:
   db_name: wmi
   schema: development
 jwt_key: a-jwt-secret-key
+jwt_expiration_in_minutes: 1000

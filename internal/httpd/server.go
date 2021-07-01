@@ -33,12 +33,12 @@ func NewServer(
 	}
 }
 
-func (s *Server) Run() error {
+func (s *Server) Run(expirationMinutes int) error {
 	r := s.router
 
 	r.Use(handleError())
 	r.POST("/user/sign-up", s.SignUpPost())
-	r.POST("/user/sign-in", s.SignInPost())
+	r.POST("/user/sign-in", s.SignInPost(expirationMinutes))
 
 	loginRequired := r.Group(".")
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))

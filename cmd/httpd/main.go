@@ -49,7 +49,7 @@ func run() error {
 
 	server := httpd.NewServer(router, authService, userService, residenceService, itemService, cfg.JwtKey)
 
-	err = server.Run()
+	err = server.Run(cfg.JwtExpirationInMinutes)
 	if err != nil {
 		return err
 	}

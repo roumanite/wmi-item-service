@@ -1,6 +1,7 @@
 package httpd
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"wmi-item-service/internal/httpd/jwt"
@@ -15,11 +16,13 @@ type Err struct {
 const (
 	jwtNoToken = "jwt-no-token"
 	jwtBadToken = "jwt-bad-token"
+	jwtExpired = "jwt-expired"
 )
 
 var (
 	ErrNoToken = domain.CustomError(jwtNoToken, "Bearer token is not found in HTTP Authorization header", nil)
-	ErrBadToken = domain.CustomError(jwtBadToken, "Invalid JWT token or signature", nil)
+	ErrBadToken = domain.CustomError(jwtBadToken, "Invalid JWT or signature", nil)
+	ErrExpiredToken = domain.CustomError(jwtExpired, "JWT has expired", nil)
 )
 
 const jwtClaimsCtxKey string = "claims"
@@ -40,6 +43,11 @@ func (s *Server) Authenticate(jwtKey []byte) gin.HandlerFunc {
 		claims, err := jwt.ParseToken(jwtKey, tokenString)
 
 		if err != nil {
+			if errors.Is(err, jwt.ExpiredToken) {
+				c.Error(ErrExpiredToken)
+				c.Abort()
+				return
+			}
 			c.Error(ErrBadToken)
 			c.Abort()
 			return

@@ -11,6 +11,7 @@ var codeToStatus = map[string]int{
 	domain.Unknown: http.StatusInternalServerError,
 	jwtNoToken: http.StatusUnauthorized,
 	jwtBadToken: http.StatusUnauthorized,
+	jwtExpired: http.StatusUnauthorized,
 	domain.InvalidRequest: http.StatusBadRequest,
 }
 

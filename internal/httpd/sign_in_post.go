@@ -12,7 +12,7 @@ type signInPostRequest struct {
 	Password string
 }
 
-func (s *Server) SignInPost() gin.HandlerFunc {
+func (s *Server) SignInPost(expirationMinutes int) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req signInPostRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
@@ -29,7 +29,7 @@ func (s *Server) SignInPost() gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.GenerateToken([]byte(s.jwtKey), user.Id)
+		token, err := jwt.GenerateToken([]byte(s.jwtKey), expirationMinutes, user.Id)
 		if err != nil {
 			c.Error(domain.ErrUnknown)
 			return
