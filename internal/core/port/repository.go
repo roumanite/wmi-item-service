@@ -23,4 +23,5 @@ type ItemRepository interface {
 	GetItem(domain.GetItemRequest) (*domain.Item, error)
 	GetItemList(domain.GetItemListRequest) (*domain.MetaItems, error)
 	DeleteItem(domain.DeleteItemRequest) (error)
+	CreateItemHistory(domain.CreateItemPositionHistoryRequest) error
 }

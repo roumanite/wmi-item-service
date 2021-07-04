@@ -94,3 +94,17 @@ func (r *ItemRepo) GetItemList(req domain.GetItemListRequest) (*domain.MetaItems
 		Items: items,
 	}, nil
 }
+
+func (r *ItemRepo) CreateItemHistory(req domain.CreateItemPositionHistoryRequest) error {
+	history := domain.ItemPositionHistory{
+		UserIdOwner: req.UserIdOwner,
+		PositionId: req.PositionId,
+		LatestPictureUrl: req.LatestPictureUrl,
+	}
+	err := r.db.Create(&history).Error
+	if err != nil {
+		fmt.Printf("create item position history db error %v\n", err)
+		return domain.ErrUnknown
+	}
+	return nil
+}

@@ -53,3 +53,12 @@ func (s *ItemService) DeleteItem(req domain.DeleteItemRequest) (error) {
 	}
 	return nil
 }
+
+func (s *ItemService) MoveItem(req domain.MoveItemRequest) error {
+	return s.repo.CreateItemHistory(
+		domain.CreateItemPositionHistoryRequest{
+			PositionId: req.PositionId,
+			LatestPictureUrl: req.LatestPictureUrl,
+		},
+	)
+}

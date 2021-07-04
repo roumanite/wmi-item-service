@@ -9,6 +9,12 @@ type Item struct {
 	Notes string `json:"notes"`
 }
 
+type ItemPositionHistory struct {
+	UserIdOwner string
+	PositionId int
+	LatestPictureUrl string
+}
+
 type CreateItemRequest struct {
 	Name string
 	UserIdOwner string
@@ -51,4 +57,19 @@ type Meta struct {
 type MetaItems struct {
 	Meta Meta `json:"meta"`
 	Items []Item `json:"results"`
+}
+
+type MoveItemRequest struct {
+	ItemId string
+	UserId string
+	PositionId int
+	LatestPictureUrl string
+}
+
+type CreateItemPositionHistoryRequest struct {
+	ItemId string
+	UserIdOwner string
+	PositionId int
+	LatestPictureUrl string
+	DeletionNotes string
 }

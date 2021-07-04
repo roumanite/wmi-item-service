@@ -45,6 +45,7 @@ func (s *Server) Run(expirationMinutes int) error {
 	{
 		loginRequired.POST("/residence", s.ResidencePost())
 		loginRequired.POST("/item", s.ItemPost())
+		loginRequired.POST("/item/:id/latest-position", s.LatestPositionPost())
 
 		loginRequired.PUT("/user/my-profile", s.MyProfilePut())
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
