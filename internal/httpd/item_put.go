@@ -7,12 +7,13 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"github.com/leebenson/conform"
 )
 
 type itemPutRequest struct {
-    Name string `binding:"required"`
-    CategoryId int `json:"categoryId"`
-    DisplayPictureUrl string `json:"displayPictureUrl"` 
+    Name string `binding:"required" conform:"trim"`
+    CategoryId int `json:"categoryId" conform:"trim"`
+    DisplayPictureUrl string `json:"displayPictureUrl" conform:"trim"` 
     Notes string `json:"notes"`
 }
 
@@ -23,6 +24,7 @@ func (s *Server) ItemPut() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+		conform.Strings(&req)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))

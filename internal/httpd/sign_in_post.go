@@ -3,12 +3,13 @@ package httpd
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/leebenson/conform"
 	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 )
 
 type signInPostRequest struct {
-	Identifier string
+	Identifier string `conform:"trim,lower"`
 	Password string
 }
 
@@ -19,6 +20,7 @@ func (s *Server) SignInPost(expirationMinutes int) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+		conform.Strings(&req)
 
 		user, err := s.authService.SignIn(domain.SignInRequest{
 			Identifier: req.Identifier,

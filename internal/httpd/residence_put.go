@@ -7,16 +7,17 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"github.com/leebenson/conform"
 )
 
 type residencePutRequest struct {
-	Nickname string `binding:"required"`
-	StreetAddress string `json:"streetAddress"`
-	City string
-	State string
-	Country string
-	ZipCode string `json:"zipCode"`
-	BuildingName string `json:"buildingName"`
+	Nickname string `binding:"required" conform:"trim"`
+	StreetAddress string `json:"streetAddress" conform:"trim"`
+	City string `conform:"trim"`
+	State string `conform:"trim"`
+	Country string `conform:"trim"`
+	ZipCode string `json:"zipCode" conform:"trim"`
+	BuildingName string `json:"buildingName" conform:"trim"`
 }
 
 func (s *Server) ResidencePut() gin.HandlerFunc {
@@ -26,6 +27,7 @@ func (s *Server) ResidencePut() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+		conform.Strings(&req)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))

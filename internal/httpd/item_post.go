@@ -5,12 +5,13 @@ import (
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/leebenson/conform"
 )
 
 type itemPostRequest struct {
-    Name string `binding:"required"`
-    CategoryId int `json:"categoryId"`
-    DisplayPictureUrl string `json:"displayPictureUrl"` 
+    Name string `binding:"required" conform:"trim"`
+    CategoryId int `json:"categoryId" conform:"trim"`
+    DisplayPictureUrl string `json:"displayPictureUrl" conform:"trim"` 
     Notes string `json:"notes"`
 }
 
@@ -21,6 +22,7 @@ func (s *Server) ItemPost() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+		conform.Strings(&req)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		item, err := s.itemService.CreateItem(domain.CreateItemRequest{

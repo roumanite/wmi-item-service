@@ -3,14 +3,15 @@ package httpd
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/leebenson/conform"
 	"wmi-item-service/internal/core/domain"
 )
 
 type signUpPostRequest struct {
-	Email string `binding:"email,required"`
-	FirstName string `json:"first_name" binding:"required"`
-	LastName string `json:"last_name"`
-	Username string `binding:"min=3,max=40,required"`
+	Email string `binding:"email,required" conform:"trim,lower"`
+	FirstName string `json:"first_name" binding:"required" conform:"trim"`
+	LastName string `json:"last_name" conform:"trim"`
+	Username string `binding:"min=3,max=40,required" conform:"trim"`
 	Password string `binding:"min=8,required"`
 }
 
@@ -21,6 +22,7 @@ func (s *Server) SignUpPost() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
+		conform.Strings(&req)
 
 		err := s.authService.SignUp(domain.SignUpRequest{
 			Email: req.Email,

@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/google/uuid v1.2.0
+	github.com/leebenson/conform v1.2.2
 	github.com/lestrrat-go/jwx v1.2.1
 	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
