@@ -50,6 +50,7 @@ func (s *Server) Run(expirationMinutes int) error {
 		loginRequired.PUT("/user/my-profile", s.MyProfilePut())
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
 		loginRequired.PUT("/item/:id", s.ItemPut())
+		loginRequired.PUT("/item/:id/is-favorite", s.ItemIsFavoritePut())
 
 		loginRequired.GET("/user/my-profile", s.MyProfileGet())
 		loginRequired.GET("/residence", s.ResidencesGet())

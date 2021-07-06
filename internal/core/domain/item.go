@@ -73,3 +73,9 @@ type CreateItemPositionHistoryRequest struct {
 	LatestPictureUrl string
 	DeletionNotes string
 }
+
+type ToggleIsFavoriteRequest struct {
+	RequesterId string
+	ItemId int
+	IsFavorite bool
+}

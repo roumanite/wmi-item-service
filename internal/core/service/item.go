@@ -62,3 +62,7 @@ func (s *ItemService) MoveItem(req domain.MoveItemRequest) error {
 		},
 	)
 }
+
+func (s *ItemService) ToggleIsFavorite(req domain.ToggleIsFavoriteRequest) error {
+	return s.repo.ToggleIsFavorite(req)
+}

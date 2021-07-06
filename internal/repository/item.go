@@ -108,3 +108,8 @@ func (r *ItemRepo) CreateItemHistory(req domain.CreateItemPositionHistoryRequest
 	}
 	return nil
 }
+
+func (r *ItemRepo) ToggleIsFavorite(req domain.ToggleIsFavoriteRequest) error {
+	// TODO
+	return nil
+}
