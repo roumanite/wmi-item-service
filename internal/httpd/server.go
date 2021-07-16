@@ -36,7 +36,7 @@ func NewServer(
 func (s *Server) Run(expirationMinutes int) error {
 	r := s.router
 
-	r.Use(handleError())
+	r.Use(respondWithError())
 	r.POST("/user/sign-up", s.SignUpPost())
 	r.POST("/user/sign-in", s.SignInPost(expirationMinutes))
 

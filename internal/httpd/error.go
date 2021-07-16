@@ -9,13 +9,13 @@ import (
 var codeToStatus = map[string]int{
 	domain.NotFound: http.StatusNotFound,
 	domain.Unknown: http.StatusInternalServerError,
+	domain.InvalidRequest: http.StatusBadRequest,
 	jwtNoToken: http.StatusUnauthorized,
 	jwtBadToken: http.StatusUnauthorized,
 	jwtExpired: http.StatusUnauthorized,
-	domain.InvalidRequest: http.StatusBadRequest,
 }
 
-func handleError() gin.HandlerFunc {
+func respondWithError() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 
@@ -35,6 +35,11 @@ func handleError() gin.HandlerFunc {
 						"message": err.Error(),
 					})
 				}
+			} else {
+				c.JSON(500, gin.H{
+					"code": "unknown",
+					"message": errorToReturn.Error(),
+				})
 			}
     }
 	}
