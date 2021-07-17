@@ -9,8 +9,8 @@ import (
 
 type signUpPostRequest struct {
 	Email string `binding:"email,required" conform:"trim,lower"`
-	FirstName string `json:"first_name" binding:"required" conform:"trim"`
-	LastName string `json:"last_name" conform:"trim"`
+	FirstName string `json:"firstName" binding:"required" conform:"trim"`
+	LastName string `json:"lastName" conform:"trim"`
 	Username string `binding:"min=3,max=40,required" conform:"trim"`
 	Password string `binding:"min=8,required"`
 }
