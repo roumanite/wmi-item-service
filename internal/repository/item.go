@@ -80,6 +80,7 @@ func (r *ItemRepo) GetItemList(req domain.GetItemListRequest) (*domain.MetaItems
 	var items []domain.Item
 	err := r.db.Table("items").
 		Where("user_id_owner = ? AND deleted_at IS NULL", req.UserIdOwner).
+		Order("created_at "+req.Order).
 		Limit(req.PerPage).
 		Find(&items).Error
 	if err != nil {

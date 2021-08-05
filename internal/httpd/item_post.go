@@ -9,7 +9,7 @@ import (
 )
 
 type itemPostRequest struct {
-    Name string `binding:"required" conform:"trim"`
+    Name string `json:"name" binding:"required" conform:"trim"`
     CategoryId int `json:"categoryId" conform:"trim"`
     DisplayPictureUrl string `json:"displayPictureUrl" conform:"trim"` 
     Notes string `json:"notes"`

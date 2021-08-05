@@ -16,8 +16,15 @@ func (s *Server) ItemsGet() gin.HandlerFunc {
 		if perPage <= 0 {
 			perPage = 200
 		}
+
+		order := c.DefaultQuery("order", "desc")
+		if order != "asc" && order != "desc" {
+			order = "desc"
+		}
+
 		metaResults, err := s.itemService.GetItemList(domain.GetItemListRequest{
 			PerPage: perPage,
+			Order: order,
 			UserIdOwner: claims.UserId,
 		})
 
