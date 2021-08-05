@@ -1,0 +1,9 @@
+[{
+  "locale": "id",
+  "key": "firstName",
+  "trans": "nama depan"
+}, {
+  "locale": "id",
+  "key": "name",
+  "trans": "nama"
+}]
