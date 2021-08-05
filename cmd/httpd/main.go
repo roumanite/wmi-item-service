@@ -6,6 +6,7 @@ import (
 	"wmi-item-service/internal/repository"
 	"wmi-item-service/internal/core/service"
 	"wmi-item-service/pkg/postgres"
+	"wmi-item-service/internal/translator"
 	"github.com/gin-gonic/gin"
 	_ "github.com/golang-migrate/migrate/database/postgres"
 	"fmt"
@@ -33,6 +34,11 @@ func run() error {
 		cfg.Database.Schema,
 	)
 
+	if err != nil {
+		return err
+	}
+
+	err = translator.LoadTranslations("translations/common", "translations/validation")
 	if err != nil {
 		return err
 	}

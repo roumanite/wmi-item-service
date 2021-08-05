@@ -3,7 +3,6 @@ package httpd
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/leebenson/conform"
 	"wmi-item-service/internal/core/domain"
 )
 
@@ -17,12 +16,7 @@ type signUpPostRequest struct {
 
 func (s *Server) SignUpPost() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req signUpPostRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*signUpPostRequest)
 
 		err := s.authService.SignUp(domain.SignUpRequest{
 			Email: req.Email,
@@ -35,6 +29,7 @@ func (s *Server) SignUpPost() gin.HandlerFunc {
 			c.Error(err)
 			return
 		}
+
 		c.JSON(http.StatusOK, gin.H{"code": "success"})
 	}
 }

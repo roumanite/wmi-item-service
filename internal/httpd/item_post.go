@@ -5,7 +5,6 @@ import (
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/leebenson/conform"
 )
 
 type itemPostRequest struct {
@@ -17,12 +16,7 @@ type itemPostRequest struct {
 
 func (s *Server) ItemPost() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req itemPostRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*itemPostRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		item, err := s.itemService.CreateItem(domain.CreateItemRequest{

@@ -2,8 +2,15 @@ package httpd
 
 import (
 	"wmi-item-service/internal/core/port"
-	"github.com/gin-gonic/gin"
+	"wmi-item-service/internal/translator"
 	"log"
+
+	"reflect"
+	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 type Server struct {
@@ -36,15 +43,28 @@ func NewServer(
 func (s *Server) Run(expirationMinutes int) error {
 	r := s.router
 
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		translator.RegisterTranslations(v)
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+
+			if name == "-" || len(name) == 0 {
+				return fld.Name
+			}
+
+			return name
+		})
+	}
+
 	r.Use(respondWithError())
-	r.POST("/user/sign-up", s.SignUpPost())
+	r.POST("/user/sign-up", Bind(signUpPostRequest{}), s.SignUpPost())
 	r.POST("/user/sign-in", s.SignInPost(expirationMinutes))
 
 	loginRequired := r.Group(".")
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))
 	{
 		loginRequired.POST("/residence", s.ResidencePost())
-		loginRequired.POST("/item", s.ItemPost())
+		loginRequired.POST("/item", Bind(itemPostRequest{}), s.ItemPost())
 		loginRequired.POST("/item/:id/latest-position", s.LatestPositionPost())
 
 		loginRequired.PUT("/user/my-profile", s.MyProfilePut())
