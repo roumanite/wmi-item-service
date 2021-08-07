@@ -10,7 +10,7 @@ import (
 )
 
 type itemDeleteRequest struct {
-	DeletionNotes string `json:"deletion_notes"`
+	DeletionNotes string `json:"deletionNotes"`
 }
 
 func (s *Server) ItemDelete() gin.HandlerFunc {

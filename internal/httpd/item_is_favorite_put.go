@@ -9,7 +9,7 @@ import (
 )
 
 type itemIsFavoritePutRequest struct {
-	IsFavorite bool `json:"is_favorite"`
+	IsFavorite bool `json:"isFavorite"`
 }
 
 func (s *Server) ItemIsFavoritePut() gin.HandlerFunc {
