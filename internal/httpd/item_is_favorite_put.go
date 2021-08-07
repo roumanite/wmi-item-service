@@ -14,11 +14,7 @@ type itemIsFavoritePutRequest struct {
 
 func (s *Server) ItemIsFavoritePut() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req itemIsFavoritePutRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
+		req := c.MustGet(gin.BindKey).(*itemIsFavoritePutRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))

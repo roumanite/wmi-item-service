@@ -17,7 +17,8 @@ type Config struct {
 		Schema   string `yaml:"schema"`
 	} `yaml:"database"`
 	JwtKey string `yaml:"jwt_key"`
-	JwtExpirationInMinutes int `yaml:"jwt_expiration_in_minutes"`
+	AccessTokenExpirationInMinutes int `yaml:"access_token_expiration_in_minutes"`
+	RefreshTokenExpirationInMinutes int `yaml:"refresh_token_expiration_in_minutes"`
 }
 
 func LoadConfig() Config {

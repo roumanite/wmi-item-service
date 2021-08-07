@@ -46,6 +46,7 @@ type GetItemListRequest struct {
 type DeleteItemRequest struct {
 	Id int
 	UserIdOwner string
+	DeletionNotes string
 }
 
 type Meta struct {

@@ -40,7 +40,7 @@ func NewServer(
 	}
 }
 
-func (s *Server) Run(expirationMinutes int) error {
+func (s *Server) Run(atExpirationMinutes int, rtExpirationMinutes int) error {
 	r := s.router
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -58,19 +58,20 @@ func (s *Server) Run(expirationMinutes int) error {
 
 	r.Use(respondWithError())
 	r.POST("/user/sign-up", Bind(signUpPostRequest{}), s.SignUpPost())
-	r.POST("/user/sign-in", s.SignInPost(expirationMinutes))
+	r.POST("/user/sign-in", Bind(signInPostRequest{}), s.SignInPost(atExpirationMinutes, rtExpirationMinutes))
+	r.POST("/access-token", Bind(accessTokenPostRequest{}), s.AccessTokenPost(atExpirationMinutes))
 
 	loginRequired := r.Group(".")
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))
 	{
 		loginRequired.POST("/residence", s.ResidencePost())
 		loginRequired.POST("/item", Bind(itemPostRequest{}), s.ItemPost())
-		loginRequired.POST("/item/:id/latest-position", s.LatestPositionPost())
+		loginRequired.POST("/item/:id/latest-position", Bind(latestPositionPostRequest{}), s.LatestPositionPost())
 
-		loginRequired.PUT("/user/my-profile", s.MyProfilePut())
+		loginRequired.PUT("/user/my-profile", Bind(myProfilePutRequest{}), s.MyProfilePut())
 		loginRequired.PUT("/residence/:id", s.ResidencePut())
-		loginRequired.PUT("/item/:id", s.ItemPut())
-		loginRequired.PUT("/item/:id/is-favorite", s.ItemIsFavoritePut())
+		loginRequired.PUT("/item/:id", Bind(itemPutRequest{}), s.ItemPut())
+		loginRequired.PUT("/item/:id/is-favorite", Bind(itemIsFavoritePutRequest{}), s.ItemIsFavoritePut())
 
 		loginRequired.GET("/user/my-profile", s.MyProfileGet())
 		loginRequired.GET("/residence", s.ResidencesGet())
@@ -79,7 +80,7 @@ func (s *Server) Run(expirationMinutes int) error {
 		loginRequired.GET("/item/:id", s.ItemGet())
 
 		loginRequired.DELETE("/residence/:id", s.ResidenceDelete())
-		loginRequired.DELETE("/item/:id", s.ItemDelete())
+		loginRequired.DELETE("/item/:id", Bind(itemDeleteRequest{}), s.ItemDelete())
 	}
 
 	err := r.Run()
