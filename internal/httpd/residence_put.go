@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"strconv"
-	"github.com/leebenson/conform"
 )
 
 type residencePutRequest struct {
@@ -22,12 +21,7 @@ type residencePutRequest struct {
 
 func (s *Server) ResidencePut() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req residencePutRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*residencePutRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))

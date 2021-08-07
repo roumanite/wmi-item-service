@@ -64,12 +64,12 @@ func (s *Server) Run(atExpirationMinutes int, rtExpirationMinutes int) error {
 	loginRequired := r.Group(".")
 	loginRequired.Use(s.Authenticate([]byte(s.jwtKey)))
 	{
-		loginRequired.POST("/residence", s.ResidencePost())
+		loginRequired.POST("/residence", Bind(residencePostRequest{}), s.ResidencePost())
 		loginRequired.POST("/item", Bind(itemPostRequest{}), s.ItemPost())
 		loginRequired.POST("/item/:id/latest-position", Bind(latestPositionPostRequest{}), s.LatestPositionPost())
 
 		loginRequired.PUT("/user/my-profile", Bind(myProfilePutRequest{}), s.MyProfilePut())
-		loginRequired.PUT("/residence/:id", s.ResidencePut())
+		loginRequired.PUT("/residence/:id", Bind(residencePutRequest{}), s.ResidencePut())
 		loginRequired.PUT("/item/:id", Bind(itemPutRequest{}), s.ItemPut())
 		loginRequired.PUT("/item/:id/is-favorite", Bind(itemIsFavoritePutRequest{}), s.ItemIsFavoritePut())
 

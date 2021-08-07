@@ -5,7 +5,6 @@ import (
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/leebenson/conform"
 )
 
 type residencePostRequest struct {
@@ -20,12 +19,7 @@ type residencePostRequest struct {
 
 func (s *Server) ResidencePost() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req residencePostRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*residencePostRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		residence, err := s.residenceService.CreateResidence(domain.CreateResidenceRequest{
