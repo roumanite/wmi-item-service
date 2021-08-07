@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"time"
-	"github.com/leebenson/conform"
 )
 
 type myProfilePutRequest struct {
@@ -18,12 +17,7 @@ type myProfilePutRequest struct {
 
 func (s *Server) MyProfilePut() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req myProfilePutRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*myProfilePutRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		profile, err := s.userService.UpdateProfile(

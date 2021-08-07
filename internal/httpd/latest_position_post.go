@@ -5,7 +5,6 @@ import (
 	"wmi-item-service/internal/core/domain"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/leebenson/conform"
 )
 
 type latestPositionPostRequest struct {
@@ -15,12 +14,7 @@ type latestPositionPostRequest struct {
 
 func (s *Server) LatestPositionPost() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req latestPositionPostRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*latestPositionPostRequest)
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		err := s.itemService.MoveItem(domain.MoveItemRequest{

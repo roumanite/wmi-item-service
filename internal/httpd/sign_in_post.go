@@ -3,24 +3,18 @@ package httpd
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/leebenson/conform"
 	"wmi-item-service/internal/httpd/jwt"
 	"wmi-item-service/internal/core/domain"
 )
 
 type signInPostRequest struct {
-	Identifier string `conform:"trim,lower"`
-	Password string
+	Identifier string `binding:"required" conform:"trim,lower"`
+	Password string `binding:"required"`
 }
 
-func (s *Server) SignInPost(expirationMinutes int) gin.HandlerFunc {
+func (s *Server) SignInPost(atExpirationMinutes int, rtExpirationMinutes int) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req signInPostRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-			return
-		}
-		conform.Strings(&req)
+		req := c.MustGet(gin.BindKey).(*signInPostRequest)
 
 		user, err := s.authService.SignIn(domain.SignInRequest{
 			Identifier: req.Identifier,
@@ -31,7 +25,13 @@ func (s *Server) SignInPost(expirationMinutes int) gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.GenerateToken([]byte(s.jwtKey), expirationMinutes, user.Id)
+		atToken, err := jwt.GenerateToken([]byte(s.jwtKey), atExpirationMinutes, user.Id)
+		if err != nil {
+			c.Error(domain.ErrUnknown)
+			return
+		}
+
+		rtToken, err := jwt.GenerateToken([]byte(s.jwtKey), rtExpirationMinutes, user.Id)
 		if err != nil {
 			c.Error(domain.ErrUnknown)
 			return
@@ -39,7 +39,8 @@ func (s *Server) SignInPost(expirationMinutes int) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"code": "success",
-			"token": token,
+			"accessToken": atToken,
+			"refreshToken": rtToken,
 		})
 	}
 }
