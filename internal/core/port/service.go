@@ -27,5 +27,5 @@ type ItemService interface {
 	GetItemList(domain.GetItemListRequest) (*domain.MetaItems, error)
 	DeleteItem(domain.DeleteItemRequest) (error)
 	MoveItem(domain.MoveItemRequest) error
-	ToggleIsFavorite(domain.ToggleIsFavoriteRequest) error
+	ToggleIsFavorite(domain.ToggleIsFavoriteRequest) (*domain.Item, error)
 }

@@ -18,7 +18,7 @@ func (s *Server) ItemIsFavoritePut() gin.HandlerFunc {
 
 		claims, _ := c.Keys[jwtClaimsCtxKey].(jwt.JwtClaims)
 		id, _ := strconv.Atoi(c.Param("id"))
-		err := s.itemService.ToggleIsFavorite(domain.ToggleIsFavoriteRequest{
+		_, err := s.itemService.ToggleIsFavorite(domain.ToggleIsFavoriteRequest{
 			RequesterId: claims.UserId,
 			ItemId: id,
 			IsFavorite: req.IsFavorite,

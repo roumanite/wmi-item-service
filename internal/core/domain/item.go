@@ -7,9 +7,11 @@ type Item struct {
 	CategoryId int `json:"categoryId"`
 	DisplayPictureUrl string `json:"displayPictureUrl"` 
 	Notes string `json:"notes"`
+	IsFavorite bool `json:"isFavorite"`
 }
 
 type ItemPositionHistory struct {
+	ItemId int
 	UserIdOwner string
 	PositionId int
 	LatestPictureUrl string
