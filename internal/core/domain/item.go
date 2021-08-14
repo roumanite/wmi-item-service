@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type Item struct {
 	Base
 	Name string `json:"name"`
@@ -43,6 +45,8 @@ type GetItemListRequest struct {
 	UserIdOwner string
 	PerPage int
 	Order string
+	LastId string
+	LastCreatedAt *time.Time
 }
 
 type DeleteItemRequest struct {
@@ -53,8 +57,9 @@ type DeleteItemRequest struct {
 
 type Meta struct {
 	PerPage int `json:"perPage"`
-	LastId string `json:"lastId"`
 	Order string `json:"order"`
+	LastId string `json:"lastId"`
+	LastCreatedAt *time.Time `json:"lastCreatedAt"`
 }
 
 type MetaItems struct {

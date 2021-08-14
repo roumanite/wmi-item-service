@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type Residence struct {
 	Base
 	UserIdOwner string `json:"UserIdOwner"`
@@ -45,6 +47,8 @@ type GetResidenceListRequest struct {
 	UserIdOwner string
 	PerPage int
 	Order string
+	LastId string
+	LastCreatedAt *time.Time
 }
 
 type DeleteResidenceRequest struct {

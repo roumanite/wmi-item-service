@@ -66,18 +66,41 @@ func (r *ResidenceRepo) GetResidence(req domain.GetResidenceRequest) (*domain.Re
 
 func (r *ResidenceRepo) GetResidenceList(req domain.GetResidenceListRequest) (*domain.MetaResidences, error) {
 	var residences []domain.Residence
-	err := r.db.Table("residences").
-		Where("user_id_owner = ? AND deleted_at IS NULL", req.UserIdOwner).
+	whereQuery := "user_id_owner = ? AND deleted_at IS NULL AND "
+	query := r.db.Debug().Table("residences")
+
+	if len(req.LastId) > 0 && req.LastCreatedAt != nil {
+		if req.Order == "desc" {
+			query = query.
+				Where(whereQuery+"(created_at < ? OR (id < ? AND created_at = ?))", req.UserIdOwner, req.LastCreatedAt, req.LastId, req.LastCreatedAt)
+		} else {
+			query = query.
+				Where(whereQuery+"(created_at > ? OR (id > ? AND created_at = ?))", req.UserIdOwner, req.LastCreatedAt, req.LastId, req.LastCreatedAt)
+		}
+	} else {
+		query = query.Where("user_id_owner = ? AND deleted_at IS NULL", req.UserIdOwner)
+	}
+
+	err := query.Order("created_at "+req.Order+", id "+req.Order).
 		Limit(req.PerPage).
 		Find(&residences).Error
 	if err != nil {
 		return nil, err
 	}
 
+	newLastId := ""
+	var newLastCreatedAt *time.Time
+	if len(residences) > 0 {
+		newLastId = residences[len(residences)-1].Id
+		newLastCreatedAt = residences[len(residences)-1].CreatedAt
+	}
+
 	return &domain.MetaResidences{
 		Meta: domain.Meta{
 			PerPage: req.PerPage,
 			Order: req.Order,
+			LastId: newLastId,
+			LastCreatedAt: newLastCreatedAt,
 		},
 		Residences: residences,
 	}, nil
