@@ -29,3 +29,6 @@ ssh -i "file.pem" <instance address>
 psql --host=... --username=... --password
 ```
 Follow the explanation here if there's operation timed out error: https://medium.com/overlander/connecting-to-rds-from-local-over-tcp-operation-timed-out-5cfc819f402c
+
+### Running the server manually
+Can be accomplished using task definition on ECS
