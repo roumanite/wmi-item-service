@@ -21,7 +21,6 @@ func main() {
 }
 
 func run() error {
-	var test string
 	cfg := config.LoadConfig()
 
 	router := gin.Default()
