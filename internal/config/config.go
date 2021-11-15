@@ -21,9 +21,9 @@ type Config struct {
 	RefreshTokenExpirationInMinutes int `yaml:"refresh_token_expiration_in_minutes"`
 }
 
-func LoadConfig() Config {
+func LoadConfig(filename string) Config {
   var configuration Config
-	f, err := ioutil.ReadFile("config.yaml")
+	f, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}

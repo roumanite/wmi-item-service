@@ -21,7 +21,12 @@ func main() {
 }
 
 func run() error {
-	cfg := config.LoadConfig()
+	configFile := os.Getenv("WMI_CONFIG_FILE")
+	if configFile == "" {
+		configFile = "config.yaml"
+	}
+
+	cfg := config.LoadConfig(configFile)
 
 	router := gin.Default()
 
