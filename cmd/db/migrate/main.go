@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	pg "wmi-item-service/pkg/postgres"
 	"fmt"
 	"flag"
@@ -34,7 +35,12 @@ func main() {
 		return
 	}
 
-	cfg := config.LoadConfig()
+	configFile := os.Getenv("WMI_CONFIG_FILE")
+	if configFile == "" {
+		configFile = "config.yaml"
+	}
+
+	cfg := config.LoadConfig(configFile)
 	db, err := pg.Open(
 		cfg.Database.Host,
 		cfg.Database.Username,
