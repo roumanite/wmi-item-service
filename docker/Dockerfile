@@ -36,6 +36,8 @@ RUN addgroup -S ${USER} && adduser -S ${USER} -G ${USER}
 WORKDIR ${WORK_DIR}
 
 COPY --chown=0:0 --from=builder ${WORK_DIR}/app ${WORK_DIR}
+COPY --chown=0:0 ./translations ${WORK_DIR}/translations
+COPY --chown=0:0 ./config.yaml ${WORK_DIR}/config.yaml
 
 USER ${USER}
 EXPOSE ${PORT}
