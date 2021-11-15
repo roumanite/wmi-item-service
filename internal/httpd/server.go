@@ -57,6 +57,7 @@ func (s *Server) Run(atExpirationMinutes int, rtExpirationMinutes int) error {
 	}
 
 	r.Use(respondWithError())
+	r.GET("/liveness", s.LivenessGet())
 	r.POST("/user/sign-up", Bind(signUpPostRequest{}), s.SignUpPost())
 	r.POST("/user/sign-in", Bind(signInPostRequest{}), s.SignInPost(atExpirationMinutes, rtExpirationMinutes))
 	r.POST("/access-token", Bind(accessTokenPostRequest{}), s.AccessTokenPost(atExpirationMinutes))
